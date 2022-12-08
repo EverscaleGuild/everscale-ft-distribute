@@ -12,16 +12,11 @@ import "@broxus/tip3/contracts/interfaces/IBounceTokensTransferCallback.sol";
 import "../libraries/GitcoinErrors.sol";
 import "locklift/src/console.sol";
 
-contract GitcoinWarmupBase is RandomNonce, IAcceptTokensTransferCallback, IAcceptTokensMintCallback, IBounceTokensTransferCallback {
+contract FTDistributeBase is RandomNonce, IAcceptTokensTransferCallback, IAcceptTokensMintCallback, IBounceTokensTransferCallback {
     uint128 constant msgFee = 0.5 ever;
     uint128 constant computeFee = 0.1 ever;
-    uint128 public reward;
-    uint8 public maxPlayers;
-    uint8 public maxBid;
 
-    address public tokenRoot_;
-    address public hiy;
-    address public ki;
+    address public ftRoot;
     address public tokenWallet;
     uint128 public balance;
     uint8 public nowPlayers;
@@ -30,7 +25,7 @@ contract GitcoinWarmupBase is RandomNonce, IAcceptTokensTransferCallback, IAccep
     event gameResult (address[] _winners, int16 _winningDelta, uint8 _winningNumber);
 
     modifier onlyTokenRoot() {
-      require(msg.sender == tokenRoot_, GitcoinErrors.NOT_TOKEN_ROOT);
+      require(msg.sender == ftRoot, GitcoinErrors.NOT_TOKEN_ROOT);
       _;
     }
 
@@ -39,8 +34,8 @@ contract GitcoinWarmupBase is RandomNonce, IAcceptTokensTransferCallback, IAccep
       _;
     }
 
-    function _reserve() public view returns(uint128 reserve){
-        return msgFee + computeFee * maxPlayers;
+    function _reserve() public pure returns(uint128 reserve){
+        return msgFee + computeFee;
     }
 
     function receiveTokenWalletAddress(address wallet) external onlyTokenRoot {

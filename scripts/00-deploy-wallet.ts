@@ -55,7 +55,7 @@ async function main() {
     constructorParams: {},
     value: locklift.utils.toNano(balance),
   });
-  console.log(`Wallet deployed at: ${Account.address}`);
+  console.log(`Wallet deployed at: ${Account.address.toString()}`);
   migration.store(Account, "wallet");
 }
 

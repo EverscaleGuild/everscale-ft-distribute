@@ -27,7 +27,12 @@
 
     "noImplicitAny": false
   },
-  "exclude": ["node_modules", "sample-project", "sample-project-typescript"],
-  "include": ["src/**/*.ts", "./**/*.ts"],
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "./**/*.ts"
+  ],
   "inlineSourceMap": true
 }

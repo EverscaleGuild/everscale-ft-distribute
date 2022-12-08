@@ -7,7 +7,7 @@ const migration = new Migration();
 const program = new Command();
 
 async function main() {
-  const CONTRACT_NAME = "GitcoinWarmup";
+  const CONTRACT_NAME = "FTDistribute";
   const signer = (await locklift.keystore.getSigner("0"))!;
   const promptsData: Object[] = [];
   program
@@ -17,9 +17,6 @@ async function main() {
       "-b, --balance <balance>",
       "Initial balance in EVERs (will send from Your wallet)",
     )
-    .option("-r, --reward <reward>", "Amount of reward for 1 game")
-    .option("-mp, --max_players <max_players>", "Number of players for 1 game");
-
   program.parse(process.argv);
 
   const options = program.opts();
@@ -29,22 +26,6 @@ async function main() {
       type: "text",
       name: "balance",
       message: "Initial balance (will send from Your wallet)",
-      validate: value => (isNumeric(value) ? true : "Invalid number"),
-    });
-  }
-  if (!options.reward) {
-    promptsData.push({
-      type: "text",
-      name: "reward",
-      message: "Amount of reward for 1 game",
-      validate: value => (isNumeric(value) ? true : "Invalid number"),
-    });
-  }
-  if (!options.max_players) {
-    promptsData.push({
-      type: "text",
-      name: "maxPlayers",
-      message: "Number of players for 1 game",
       validate: value => (isNumeric(value) ? true : "Invalid number"),
     });
   }
@@ -62,21 +43,18 @@ async function main() {
       _randomNonce: locklift.utils.getRandomNonce(),
     },
     constructorParams: {
-      _deployWalletBalance: locklift.utils.toNano(5),
-      _reward: reward,
-      _maxPlayers: maxPlayers,
-      _tokenRoot: tokenRootCtr.address,
-      _maxBid: 10,
+      ftWalletBalanceInit: locklift.utils.toNano(5),
+      ft: tokenRootCtr.address,
     },
     value: locklift.utils.toNano(balance),
   });
 
-  console.log(`Gitcoin deployed at: ${gitcoin.address}`);
+  console.log(`deployed at: ${gitcoin.address.toString()}`);
 
   const tw = await gitcoin.methods.tokenWallet({}).call();
   console.log(tw);
 
-  migration.store(gitcoin, "gitcoin");
+  migration.store(gitcoin, "deploy");
 }
 
 main()

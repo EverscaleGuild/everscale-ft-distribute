@@ -1,15 +1,16 @@
 {
-  "name": "everscale-sscalator",
+  "name": "everscale-ft-distrib",
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "npx locklift test --network local",
-    "new-wallet": "yarn locklift run -n local -s scripts/00-deploy-wallet.ts --key_number 0 --balance 100",
-    "new-token": "yarn locklift run -n local -s scripts/01-deploy-token.ts -ro 0:0000000000000000000000000000000000000000000000000000000000000000 --name escalator --symbol ESC --decimals 0 --initial_supply 10000 --disable_mint false --disable_burn_by_root true --pause_burn false",
-    "new-game": "yarn locklift run -n local -s scripts/02-deploy-game.ts --balance 50",
-    "topup-game": "yarn locklift run -n local -s scripts/03-topup-game.ts",
+    "build": "locklift build",
+    "test": "locklift test --network local",
+    "new-wallet": "yarn locklift run -s scripts/00-deploy-wallet.ts --key_number 0 --balance 100",
+    "new-token": "yarn locklift run -s scripts/01-deploy-token.ts -ro 0:0000000000000000000000000000000000000000000000000000000000000000 --name escalator --symbol ESC --decimals 0 --initial_supply 10000 --disable_mint false --disable_burn_by_root true --pause_burn false",
+    "new": "yarn locklift run -s scripts/02-deploy.ts --balance 50",
+    "topup": "yarn locklift run -s scripts/03-topup.ts",
     "full-deploy": "yarn new-wallet && yarn new-token && yarn new-game",
-    "start-sandbox": "docker run -d -e USER_AGREEMENT=yes --rm --name local-node -p80:80 tonlabs/local-node:0.29.1",
+    "start-sandbox": "docker run -d -e USER_AGREEMENT=yes --rm --name local-node -p80:80 tonlabs/local-node:0.29.1 && sleep 10",
     "stop-sandbox": "docker kill local-node",
     "reload-sandbox": "yarn stop-sandbox && yarn start-sandbox"
   },
@@ -23,13 +24,13 @@
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.0.6",
     "chai": "^4.3.6",
-    "everscale-standalone-client": "^2.0.19",
-    "locklift": "^2.1.7",
-    "prettier": "^2.7.1",
-    "ts-mocha": "^10.0.0",
-    "typescript": "^4.7.4",
     "chai-bignumber": "^3.0.0",
+    "everdev": "^1.4.1",
+    "everscale-standalone-client": "^2.0.19",
+    "locklift": "^2.4.5",
+    "prettier": "^2.7.1",
     "prompts": "^2.4.2",
-    "everdev": "^1.2.2"
+    "ts-mocha": "^10.0.0",
+    "typescript": "^4.7.4"
   }
 }
